@@ -24,10 +24,10 @@ export default class S3Client {
     }
 
     private static getOptions(): ClientConfiguration {
-        if (process.env.LOCAL_S3_ENDPOINT) {
+        if (process.env.AWS_LOCAL_ENDPOINT) {
             return {
                 s3ForcePathStyle: true,
-                endpoint: process.env.LOCAL_S3_ENDPOINT,
+                endpoint: process.env.AWS_LOCAL_ENDPOINT,
             };
         }
         return {};
