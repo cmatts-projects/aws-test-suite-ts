@@ -4,8 +4,6 @@
   "description": "AWS test suite for typescript",
   "main": "index.js",
   "scripts": {
-    "prettier": "prettier '**/*.ts'",
-    "prettier:fix": "prettier --write '**/*.ts'",
     "lint": "eslint **/*.ts",
     "lint:fix": "eslint --fix **/*.ts",
     "build": "npm install && npm run lint && npm run test",
