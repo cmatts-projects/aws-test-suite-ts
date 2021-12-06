@@ -78,7 +78,7 @@ Features:
 * Creation of a parameter
 * Reading a parameter
 
-## SQS (TODO)
+## SQS
 The Sqs examples demonstrate how to create queues and send and receive messages.
 
 Features:

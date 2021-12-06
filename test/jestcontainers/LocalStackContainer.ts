@@ -48,21 +48,19 @@ export default class LocalStackContainer {
         return env;
     }
 
-    private static buildPortBindings(externalPort: number): { [index: string]: any } {
-        const portBindings: { [index: string]: any } = {};
+    private static buildPortBindings(externalPort: number): Record<string, Record<string, string>[]> {
+        const portBindings: Record<string, Record<string, string>[]> = {};
         portBindings[`${LocalStackContainer.EDGE_PORT}/tcp`] = [{ HostPort: String(externalPort) }];
         return portBindings;
     }
 
     private static async waitForContainerToStart(container: Docker.Container): Promise<void> {
-        const logs = await container.logs({
-            follow: true,
-            stdout: true,
-            stderr: true,
-        });
-
-        const readLogs = readline.createInterface({
-            input: logs,
+        const readLogs: readline.Interface = readline.createInterface({
+            input: await container.logs({
+                follow: true,
+                stdout: true,
+                stderr: true,
+            }),
         });
 
         return new Promise((resolve, reject) => {
