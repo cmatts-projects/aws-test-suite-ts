@@ -24,7 +24,7 @@ export default class SqsClient {
 
     private client: SQS | undefined;
 
-    public constructor(extendedClientBucket: string) {
+    public constructor(extendedClientBucket: string | undefined) {
         this.extendedClientBucket = extendedClientBucket;
     }
 
@@ -109,7 +109,7 @@ export default class SqsClient {
         };
     }
 
-    private largeMessagePayload(uuid: string): string {
+    public largeMessagePayload(uuid: string): string {
         return `["${SqsClient.LARGE_PAYLOAD_ID}",{"s3BucketName":"${this.extendedClientBucket}","s3Key":"${uuid}"}]`;
     }
 
@@ -128,12 +128,6 @@ export default class SqsClient {
         const s3Url = SqsClient.getLargeMessageS3Url(largeMessagePayload.s3BucketName, largeMessagePayload.s3Key);
         return await S3Client.readFromBucket(s3Url);
     }
-
-    // public async deleteOriginalMessage(message: string): Promise<void> {
-    //     // const largeMessagePayload = JSON.parse(match[1]);
-    //     // const s3Url = SqsClient.getLargeMessageS3Url(largeMessagePayload.s3BucketName, largeMessagePayload.s3Key);
-    //     // await S3Client.delete(s3Url);
-    // }
 
     public async storeOriginalMessage(message: string): Promise<string> {
         if (!this.extendedClientBucket) {

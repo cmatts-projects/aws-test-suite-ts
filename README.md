@@ -88,12 +88,11 @@ Features:
 * S3 support for large messages
 * Queue purging
 
-## Lambda (TODO)
+## Lambda
 The Lambda examples demonstrate how to handle events from a variety of sources.
 
 Features:
 * Simple object event handling
-* Stream event object handling
 * Sqs event handling
 * Extended Sqs event handling
  
