@@ -2,12 +2,12 @@
   "name": "aws-test-suite",
   "version": "1.0.0",
   "description": "AWS test suite for typescript",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "lint": "eslint {src,test}/**/*.ts",
     "lint:fix": "eslint --fix {src,test}/**/*.ts",
     "build": "npm install && npm run lint && npm run test",
-    "test": "jest --reporters='default'",
+    "test": "jest --reporters='default' --runInBand",
     "coverage": "jest --coverage"
   },
   "author": "Calvin Matthews",
