@@ -1,4 +1,5 @@
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = {
@@ -32,6 +33,11 @@ module.exports = {
 
         })
     ],
+    optimization: {
+        minimizer: [new TerserPlugin({
+            extractComments: false,
+        })],
+    },
     mode: process.env.NODE_ENV || 'production',
     devtool: 'inline-source-map',
     target: 'node',
