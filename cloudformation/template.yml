@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  RuntimeTestQueue:
+    Description: name of the test queue
+    Type: String
+    Default: myQueue
+  RuntimeForwardQueue:
+    Description: name of the forward queue
+    Type: String
+    Default: myForwardQueue
+
+Resources:
+  TestQueue:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: queue.yml
+      Parameters:
+        RuntimeQueue: !Ref RuntimeTestQueue
+
+  ForwardQueue:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: queue.yml
+      Parameters:
+        RuntimeQueue: !Ref RuntimeForwardQueue
+
+  Lambdas:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: lambda.yml

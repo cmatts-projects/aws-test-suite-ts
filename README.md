@@ -20,6 +20,8 @@ Additional `npm` services are available:
 * `lint:fix` - to fix linting errors
 * `test` - to run the tests
 * `coverage` - to generate a coverage report
+* `dist` - to generate the distribution zip
+* `testDeploy` - to test deployment to localstack
 
 # Services
 ## DynamoDB (TODO)
@@ -95,4 +97,21 @@ Features:
 * Simple object event handling
 * Sqs event handling
 * Extended Sqs event handling
- 
+
+# Dockerisation
+The `docker` folder contains a sample `docker-compose` definition to deploy and test the stack with localstack.
+
+Features:
+* Configuration of Lambda deployment to a child container
+* Aws cloudformation package and deployment
+* S3 bucket creation
+* Lambda invocation
+* Queue sending and receiving
+
+# Cloudformation
+The `cloudformation` folder contains sample component templates.
+
+Features:
+* Nested template structure
+* Queue template
+* Lambda template 

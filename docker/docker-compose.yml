@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  localstack:
+    image: localstack/localstack:0.12.15
+    container_name: localstack
+    ports:
+      - 4566:4566
+    volumes:
+      - ../dist/:/opt/dist
+      - /tmp/localstack:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      SERVICE: cloudformation,s3,sqs,lambda
+      HOSTNAME_EXTERNAL: localstack
+      DEBUG: 1
+      DEFAULT_REGION: us-east-1
+      LAMBDA_EXECUTOR: docker
+      LAMBDA_REMOTE_DOCKER: 'true'
+      LAMBDA_REMOVE_CONTAINERS: 'true'
+      DATA_DIR: /tmp/localstack/data
+      DOCKER_HOST: unix:///var/run/docker.sock

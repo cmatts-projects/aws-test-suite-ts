@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  RuntimeQueue:
+    Description: name of the queue
+    Type: String
+
+Resources:
+  SqsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Ref RuntimeQueue
+
+Outputs:
+  QueueUrl:
+    Value: !Ref SqsQueue
