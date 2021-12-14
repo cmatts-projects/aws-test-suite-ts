@@ -8,6 +8,7 @@ This repo contains example implementations of AWS features and services along wi
 Docker must be installed and configured so that the current user can invoke containers. On Linux, this means adding docker and the user to a docker group.
 Node 17+ must be installed.
 Npm 8+ must be installed.
+Jq is required for Docker compose testing.
 
 # Build
 To build and test:
@@ -104,9 +105,8 @@ The `docker` folder contains a sample `docker-compose` definition to deploy and 
 Features:
 * Configuration of Lambda deployment to a child container
 * Aws cloudformation package and deployment
-* S3 bucket creation
-* Lambda invocation
-* Queue sending and receiving
+* Test lambda invocation
+* Test queue sending and receiving
 
 # Cloudformation
 The `cloudformation` folder contains sample component templates.
