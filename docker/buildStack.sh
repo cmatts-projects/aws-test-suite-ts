@@ -1,4 +1,7 @@
 #!/bin/bash
+source ./assertions.sh
+
+initialiseAssertions
 
 function waitForContainerToStart() {
   until docker logs localstack | grep -q -m 1 "^Ready.$"; do
@@ -10,17 +13,17 @@ function waitForContainerToStart() {
 
 cp -r ../cloudformation/* ../dist
 
-echo Start container
 docker-compose up -d
 
 waitForContainerToStart
 
-echo "Localstack started."
-
 ./deployStack.sh
 
-./testSqs.sh
-./testLambda.sh
+. ./testDeployment.sh
+. ./testSqs.sh
+. ./testLambda.sh
+
+reportAssertions
 
 echo "Stopping Localstack."
 docker-compose down

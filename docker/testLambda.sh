@@ -2,6 +2,8 @@
 
 source ./assertions.sh
 
+describe "Test Lambdas"
+
 expectJsonAttr "should execute simple lambda" \
   "$(docker-compose exec localstack awslocal lambda invoke \
   --function-name SimpleEventLambda \
@@ -10,8 +12,6 @@ expectJsonAttr "should execute simple lambda" \
   ".StatusCode" \
   "200"
 
-expectEquals "should execute simple lambda" \
+expectEquals "should match simple lambda output" \
   "$(docker-compose exec localstack cut -d'"' -f2 output.json | strings)" \
   "test 123"
-
-reportAssertions

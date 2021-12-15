@@ -1,5 +1,8 @@
 #!/bin/bash
+
 source ./assertions.sh
+
+describe "Test SQS Service"
 
 expectJsonAttr "should send a message to the forward queue" \
   "$(docker-compose exec localstack awslocal sqs send-message \
@@ -13,5 +16,3 @@ expectJsonAttr "should receive message containing" \
   --queue-url http://localstack:4566/queue/myForwardQueue)" \
   ".Messages[].Body" \
   "A plain message"
-
-reportAssertions
