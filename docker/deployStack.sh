@@ -2,6 +2,7 @@
 
 echo Creating a bucket to upload cloudformation to
 docker-compose exec localstack awslocal s3 mb s3://cloudformation
+cp ../cloudformation/* ../dist/.
 
 echo Deploying Cloudformation scripts to localstack
 docker-compose exec localstack awslocal cloudformation package \
