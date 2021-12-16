@@ -17,8 +17,6 @@ docker-compose up -d
 
 waitForContainerToStart
 
-./deployStack.sh
-
 . ./testDeployment.sh
 . ./testSqs.sh
 . ./testLambda.sh

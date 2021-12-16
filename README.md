@@ -103,10 +103,12 @@ Features:
 The `docker` folder contains a sample `docker-compose` definition to deploy and test the stack with localstack.
 
 Features:
-* Configuration of Lambda deployment to a child container
+* Configuration of lambda deployment to a child container
 * Aws cloudformation package and deployment
-* Test lambda invocation
-* Test queue sending and receiving
+* BDD style bash testing
+* Test stack creation
+* Test lambdas
+* Test SQS Service
 
 # Cloudformation
 The `cloudformation` folder contains sample component templates.

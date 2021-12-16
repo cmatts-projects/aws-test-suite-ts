@@ -2,17 +2,17 @@
 
 source ./assertions.sh
 
-describe "Test SQS Service"
+Scenario "Test SQS Service"
 
-expectJsonAttr "should send a message to the forward queue" \
+When "a message is sent to the forward queue" \
   "$(docker-compose exec localstack awslocal sqs send-message \
   --queue-url http://localstack:4566/queue/myForwardQueue \
   --message-body "A plain message")" \
-  ".MD5OfMessageBody" \
-  "fa9b57eb3202f864c8ebbad0c9744092"
+  "fa9b57eb3202f864c8ebbad0c9744092" \
+  ".MD5OfMessageBody"
 
-expectJsonAttr "should receive message containing" \
+Then "the message will be received from the forward queue" \
   "$(docker-compose exec localstack awslocal sqs receive-message \
   --queue-url http://localstack:4566/queue/myForwardQueue)" \
-  ".Messages[].Body" \
-  "A plain message"
+  "A plain message" \
+  ".Messages[].Body"

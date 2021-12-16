@@ -8,7 +8,7 @@ function initialiseAssertions {
   export assertions_passes=0
   export assertions_fails=0
   export assertions_total=0
-  export assertions_suites=0
+  export assertions_scenarios=0
 }
 
 function expectEquals {
@@ -16,29 +16,52 @@ function expectEquals {
   local desc=$1
   local actual=$2
   local expected=$3
-  if [ "${actual}" != "${expected}" ]; then
-    echo -e "\t${desc} - ${RED}FAIL${NC}"
+  if [ ! -z "${expected}" ] && [ "${actual}" != "${expected}" ]; then
+    echo -e "\t${RED}${desc} - FAIL${NC}"
     echo -e "\t\texpected:"
     echo -e "\t\t\t${actual}"
     echo -e "\t\tto equal:"
     echo -e "\t\t\t${expected}"
     ((assertions_fails++))
   else
-    echo -e "\t${desc} - ${GREEN}PASS${NC}"
+    echo -e "\t${GREEN}${desc} - PASS${NC}"
     ((assertions_passes++))
   fi
 }
 
 function expectJsonAttr {
-  local actual=$(jq -r $3 <<< $2 2>/dev/null)
-  expectEquals "$1" "${actual}" "$4"
+  local desc=$1
+  local actual=$2
+  local expected=$3
+  if [ ! -z "$4" ]; then
+    actual=$(jq -r $4 <<< $2 2>/dev/null)
+  fi
+
+  expectEquals "${desc}" "${actual}" "${expected}"
 }
 
 function reportAssertions {
-  echo -e "\nSuites: $assertions_suites, Total: $assertions_total, Passes: $assertions_passes, Failures: $assertions_fails\n"
+  echo -e "\nScenarios: $assertions_scenarios, Total: $assertions_total, Passes: $assertions_passes, Failures: $assertions_fails\n"
 }
 
-function describe {
-  ((assertions_suites++))
-  echo -e "\nTest suite: $1"
+function Scenario {
+  ((assertions_scenarios++))
+  echo -e "\nScenario: $1"
+}
+
+# Given/When/Then Parameters
+# 1 - description
+# 2 - actual result
+# 3 - expected result
+# 4 - json path to extract result
+function Given {
+  expectJsonAttr "Given $1" "$2" "$3" "$4"
+}
+
+function When {
+  expectJsonAttr "When $1" "$2" "$3" "$4"
+}
+
+function Then {
+  expectJsonAttr "Then $1" "$2" "$3" "$4"
 }
