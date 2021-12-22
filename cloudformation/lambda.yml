@@ -1,6 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  TestQueueArn:
+    Description: arn of the queue
+    Type: String
+
 Resources:
   SimpleEventLambda:
     Type: AWS::Serverless::Function
@@ -10,6 +15,26 @@ Resources:
       Handler: lambda.simpleEventHandler
       Runtime: nodejs12.x
 
+  SqsEventLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: SqsEventLambda
+      CodeUri: lambda.js.zip
+      Handler: lambda.sqsEventHandler
+      Runtime: nodejs12.x
+      ReservedConcurrentExecutions: 1
+      Environment:
+        Variables:
+          FORWARD_QUEUE: myForwardQueue
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue: arn:aws:sqs:us-east-1:000000000000:myQueue
+            BatchSize: 10
+
 Outputs:
   SimpleEventLambdaArn:
     Value: !GetAtt SimpleEventLambda.Arn
+  SqsEventLambdaArn:
+    Value: !GetAtt SqsEventLambda.Arn

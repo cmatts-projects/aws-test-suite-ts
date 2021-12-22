@@ -7,7 +7,7 @@ export default class SqsEventHandler {
     public static async handleRequest(event: SQSEvent): Promise<string> {
         const { Records } = event;
 
-        await Promise.all(Records.map((r) => SqsEventHandler.doSomething(r)));
+        await Promise.all(Records.map(async (r) => await SqsEventHandler.doSomething(r)));
 
         return 'OK';
     }

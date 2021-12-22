@@ -30,3 +30,4 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: lambda.yml
+      TestQueueArn: !GetAtt TestQueue.Outputs.QueueArn

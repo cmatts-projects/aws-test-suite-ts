@@ -65,3 +65,7 @@ function When {
 function Then {
   expectJsonAttr "Then $1" "$2" "$3" "$4"
 }
+
+function And {
+  expectJsonAttr "And $1" "$2" "$3" "$4"
+}

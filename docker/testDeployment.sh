@@ -2,7 +2,7 @@
 
 source ./assertions.sh
 
-Scenario "Test stack creation"
+Scenario "Stack creation"
 
 When "stack deploy is invoked" "$(./deployStack.sh)"
 

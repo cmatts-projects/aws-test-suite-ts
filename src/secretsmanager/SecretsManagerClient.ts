@@ -20,9 +20,10 @@ export default class SecretsManagerClient {
     }
 
     private static getOptions(): ClientConfiguration {
-        if (process.env.AWS_LOCAL_ENDPOINT) {
+        if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
+            const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
             return {
-                endpoint: process.env.AWS_LOCAL_ENDPOINT,
+                endpoint,
                 region: process.env.AWS_REGION,
             };
         }

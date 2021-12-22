@@ -24,10 +24,11 @@ export default class S3Client {
     }
 
     private static getOptions(): ClientConfiguration {
-        if (process.env.AWS_LOCAL_ENDPOINT) {
+        if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
+            const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
             return {
+                endpoint,
                 s3ForcePathStyle: true,
-                endpoint: process.env.AWS_LOCAL_ENDPOINT,
             };
         }
         return {};

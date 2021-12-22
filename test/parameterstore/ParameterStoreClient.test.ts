@@ -12,11 +12,7 @@ describe('parameter store client test', () => {
     beforeAll(async () => {
         localStackContainer = await LocalStackContainer.create([LocalStackService.PARAMETER_STORE]);
 
-        process.env.AWS_REGION = 'us-east-1';
-        process.env.AWS_ACCESS_KEY = 'access-key';
-        process.env.AWS_SECRET_ACCESS_KEY = 'secret-key';
-        process.env.AWS_LOCAL_ENDPOINT = localStackContainer.getEndpoint();
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+        localStackContainer.setLocalstackProperties();
     });
 
     afterAll(async () => {

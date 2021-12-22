@@ -17,11 +17,7 @@ describe('Sqs Event Handler Test', () => {
     beforeAll(async () => {
         localStackContainer = await LocalStackContainer.create([LocalStackService.SQS]);
 
-        process.env.AWS_REGION = 'us-east-1';
-        process.env.AWS_ACCESS_KEY = 'access-key';
-        process.env.AWS_SECRET_ACCESS_KEY = 'secret-key';
-        process.env.AWS_LOCAL_ENDPOINT = localStackContainer.getEndpoint();
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+        localStackContainer.setLocalstackProperties();
         process.env.FORWARD_QUEUE = TEST_QUEUE;
 
         await getSqsClient().createQueue(TEST_QUEUE);

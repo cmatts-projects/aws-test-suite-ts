@@ -38,9 +38,11 @@ export default class SqsClient {
     }
 
     private static getOptions(): ClientConfiguration {
-        if (process.env.AWS_LOCAL_ENDPOINT) {
+        if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
+            const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
+
             return {
-                endpoint: process.env.AWS_LOCAL_ENDPOINT,
+                endpoint,
                 region: process.env.AWS_REGION,
             };
         }
@@ -147,10 +149,12 @@ export default class SqsClient {
         const params: GetQueueUrlRequest = {
             QueueName: queueName,
         };
+
         const response: GetQueueUrlResult = await this.getSqsClient().getQueueUrl(params).promise();
         if (!response.QueueUrl) {
             throw new Error('Can not get queue url');
         }
+
         return response.QueueUrl;
     }
 }

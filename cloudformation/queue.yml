@@ -10,7 +10,10 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Ref RuntimeQueue
+      VisibilityTimeout: 60
 
 Outputs:
   QueueUrl:
     Value: !Ref SqsQueue
+  QueueArn:
+    Value: !GetAtt SqsQueue.Arn
