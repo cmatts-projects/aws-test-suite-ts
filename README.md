@@ -25,7 +25,7 @@ Additional `npm` services are available:
 * `testDeploy` - to test deployment to localstack
 
 # Services
-## DynamoDB (TODO)
+## DynamoDB
 The dynamoDB example demonstrates how to create dynamo tables using Cloudformation and read and write to those tables using the DynamoDB mapper feature.
 
 Features:
@@ -33,12 +33,8 @@ Features:
 * Bulk loading data
 * Searching by Partition key
 * Searching by GSI
-* Use of DynamoDBMapper and annotations
-* Table name prefix override configuration
-* Optimistic locking
 * Transactions
 * Localstack test container creation for DynamoDB and Cloudformation
-* Lombok based pojo's
 
 ## Cloudwatch
 The cloudwatch example demonstrates some basic logging of cloudwatch metrics and extracting statistics.
@@ -46,15 +42,6 @@ The cloudwatch example demonstrates some basic logging of cloudwatch metrics and
 Features:
 * Bulk logging of metrics
 * Getting average statistics from metrics
-
-## Kinesis Streams (TODO)
-The Kinesis example demonstrates how to send and retrieve messages using a Kinesis data stream.
-
-Features:
-* Creation of a stream
-* Waiting for the stream to be active
-* Use of a Kinesis Producer to batch message send requests
-* Listening to a Kinesis stream and collecting messages
 
 ## S3
 The S3 example demonstrates how to store and retrieve content in an S3 bucket.

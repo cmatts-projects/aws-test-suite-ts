@@ -12,7 +12,7 @@ services:
       - /tmp/localstack:/tmp/localstack
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      SERVICE: cloudformation,s3,sqs,lambda
+      SERVICE: cloudformation,s3,sqs,lambda,dynamodb
       DEBUG: 1
       DEFAULT_REGION: us-east-1
       HOSTNAME_EXTERNAL: 172.17.0.2

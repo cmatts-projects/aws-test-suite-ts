@@ -1,0 +1,540 @@
+{
+  "people": [
+    {
+      "id": 1,
+      "name": "Mr Test",
+      "fatherId": 16,
+      "motherId": 17,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 2,
+      "name": "Mr Test1",
+      "fatherId": 16,
+      "motherId": 17,
+      "yearOfBirth": 1890,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 3,
+      "name": "Mr Test2",
+      "fatherId": 16,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 4,
+      "name": "Mr Test3",
+      "fatherId": 16,
+      "motherId": 20,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 5,
+      "name": "Mr Test4",
+      "fatherId": 16,
+      "motherId": 21,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 6,
+      "name": "Mr Test5",
+      "fatherId": 16,
+      "motherId": 21,
+      "yearOfBirth": 1890,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 7,
+      "name": "Mr Test6",
+      "fatherId": 16,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 8,
+      "name": "Mr Test10",
+      "motherId": 17,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 9,
+      "name": "Mr Test11",
+      "fatherId": 18,
+      "motherId": 17,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 10,
+      "name": "Mr Test12",
+      "fatherId": 19,
+      "motherId": 17,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 11,
+      "name": "Mr Test13",
+      "fatherId": 19,
+      "motherId": 17,
+      "yearOfBirth": 1890,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 12,
+      "name": "Mr Test14",
+      "motherId": 17,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 13,
+      "name": "Mr Test15",
+      "fatherId": 14,
+      "motherId": 15,
+      "yearOfBirth": 1900,
+      "yearOfDeath": 1990,
+      "version": 1
+    },
+    {
+      "id": 14,
+      "name": "Mr Test16",
+      "yearOfBirth": 1880,
+      "version": 1
+    },
+    {
+      "id": 15,
+      "name": "Mr Test17",
+      "yearOfDeath": 1920,
+      "version": 1
+    },
+    {
+      "id": 16,
+      "name": "Mr Test20",
+      "version": 1
+    },
+    {
+      "id": 17,
+      "name": "Mr Test21",
+      "version": 1
+    },
+    {
+      "id": 18,
+      "name": "Mr Test22",
+      "version": 1
+    },
+    {
+      "id": 19,
+      "name": "Mr Test23",
+      "version": 1
+    },
+    {
+      "id": 20,
+      "name": "Mr Test24",
+      "version": 1
+    },
+    {
+      "id": 21,
+      "name": "Mr Test25",
+      "version": 1
+    },
+    {
+      "id": 22,
+      "name": "First Person",
+      "version": 1
+    }
+  ],
+  "facts": [
+    {
+      "id": 7,
+      "personId": 1,
+      "year": 1901,
+      "image": "resource2",
+      "description": "fact1",
+      "version": 1
+    },
+    {
+      "id": 8,
+      "personId": 1,
+      "year": 1902,
+      "image": "resource1",
+      "description": "fact2",
+      "version": 1
+    },
+    {
+      "id": 9,
+      "personId": 1,
+      "year": 1892,
+      "source": "source1",
+      "description": "fact3",
+      "version": 1
+    },
+    {
+      "id": 10,
+      "personId": 2,
+      "year": 1852,
+      "image": "resource3",
+      "description": "fact4",
+      "version": 1
+    },
+    {
+      "id": 11,
+      "personId": 3,
+      "year": 1872,
+      "image": "resource4",
+      "description": "fact5",
+      "version": 1
+    },
+    {
+      "id": 12,
+      "personId": 21,
+      "year": 1872,
+      "image": "Original",
+      "description": "some facts",
+      "version": 1
+    }
+  ],
+  "siblings": {
+    "person_1": {
+      "fullSiblings": [
+        {
+          "id": 2,
+          "name": "Mr Test1",
+          "fatherId": 16,
+          "motherId": 17,
+          "yearOfBirth": 1890,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 1,
+          "name": "Mr Test",
+          "fatherId": 16,
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        }
+      ],
+      "stepByFather": [
+        {
+          "id": 3,
+          "name": "Mr Test2",
+          "fatherId": 16,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 7,
+          "name": "Mr Test6",
+          "fatherId": 16,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 4,
+          "name": "Mr Test3",
+          "fatherId": 16,
+          "motherId": 20,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 6,
+          "name": "Mr Test5",
+          "fatherId": 16,
+          "motherId": 21,
+          "yearOfBirth": 1890,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 5,
+          "name": "Mr Test4",
+          "fatherId": 16,
+          "motherId": 21,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        }
+      ],
+      "stepByMother": [
+        {
+          "id": 8,
+          "name": "Mr Test10",
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 12,
+          "name": "Mr Test14",
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 9,
+          "name": "Mr Test11",
+          "fatherId": 18,
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 11,
+          "name": "Mr Test13",
+          "fatherId": 19,
+          "motherId": 17,
+          "yearOfBirth": 1890,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 10,
+          "name": "Mr Test12",
+          "fatherId": 19,
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        }
+      ],
+      "parents": [
+        {
+          "id": 16,
+          "name": "Mr Test20",
+          "version": 1
+        },
+        {
+          "id": 17,
+          "name": "Mr Test21",
+          "version": 1
+        },
+        {
+          "id": 18,
+          "name": "Mr Test22",
+          "version": 1
+        },
+        {
+          "id": 19,
+          "name": "Mr Test23",
+          "version": 1
+        },
+        {
+          "id": 20,
+          "name": "Mr Test24",
+          "version": 1
+        },
+        {
+          "id": 21,
+          "name": "Mr Test25",
+          "version": 1
+        }
+      ]
+    },
+    "person_3": {
+      "fullSiblings": [
+        {
+          "id": 3,
+          "name": "Mr Test2",
+          "fatherId": 16,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 7,
+          "name": "Mr Test6",
+          "fatherId": 16,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        }
+      ],
+      "stepByFather": [
+        {
+          "id": 2,
+          "name": "Mr Test1",
+          "fatherId": 16,
+          "motherId": 17,
+          "yearOfBirth": 1890,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 1,
+          "name": "Mr Test",
+          "fatherId": 16,
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 4,
+          "name": "Mr Test3",
+          "fatherId": 16,
+          "motherId": 20,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 6,
+          "name": "Mr Test5",
+          "fatherId": 16,
+          "motherId": 21,
+          "yearOfBirth": 1890,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 5,
+          "name": "Mr Test4",
+          "fatherId": 16,
+          "motherId": 21,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        }
+      ],
+      "stepByMother": [],
+      "parents": [
+        {
+          "id": 16,
+          "name": "Mr Test20",
+          "version": 1
+        },
+        {
+          "id": 17,
+          "name": "Mr Test21",
+          "version": 1
+        },
+        {
+          "id": 20,
+          "name": "Mr Test24",
+          "version": 1
+        },
+        {
+          "id": 21,
+          "name": "Mr Test25",
+          "version": 1
+        }
+      ]
+    },
+    "person_8": {
+      "fullSiblings": [
+        {
+          "id": 8,
+          "name": "Mr Test10",
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 12,
+          "name": "Mr Test14",
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        }
+      ],
+      "stepByFather": [],
+      "stepByMother": [
+        {
+          "id": 2,
+          "name": "Mr Test1",
+          "fatherId": 16,
+          "motherId": 17,
+          "yearOfBirth": 1890,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 1,
+          "name": "Mr Test",
+          "fatherId": 16,
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 9,
+          "name": "Mr Test11",
+          "fatherId": 18,
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 11,
+          "name": "Mr Test13",
+          "fatherId": 19,
+          "motherId": 17,
+          "yearOfBirth": 1890,
+          "yearOfDeath": 1990,
+          "version": 1
+        },
+        {
+          "id": 10,
+          "name": "Mr Test12",
+          "fatherId": 19,
+          "motherId": 17,
+          "yearOfBirth": 1900,
+          "yearOfDeath": 1990,
+          "version": 1
+        }
+      ],
+      "parents": [
+        {
+          "id": 16,
+          "name": "Mr Test20",
+          "version": 1
+        },
+        {
+          "id": 17,
+          "name": "Mr Test21",
+          "version": 1
+        },
+        {
+          "id": 18,
+          "name": "Mr Test22",
+          "version": 1
+        },
+        {
+          "id": 19,
+          "name": "Mr Test23",
+          "version": 1
+        }
+      ]
+    }
+  }
+}

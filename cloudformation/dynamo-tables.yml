@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Resources:
+  PeopleTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: dynamo.example.people
+      AttributeDefinitions:
+        -
+          AttributeName: "id"
+          AttributeType: "N"
+        -
+          AttributeName: "fatherId"
+          AttributeType: "N"
+        -
+          AttributeName: "motherId"
+          AttributeType: "N"
+      KeySchema:
+        -
+          AttributeName: "id"
+          KeyType: "HASH"
+      GlobalSecondaryIndexes:
+        -
+          IndexName: "fatherIndex"
+          KeySchema:
+            -
+              AttributeName: "fatherId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+        -
+          IndexName: "motherIndex"
+          KeySchema:
+            -
+              AttributeName: "motherId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  FactTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: dynamo.example.facts
+      AttributeDefinitions:
+        -
+          AttributeName: "id"
+          AttributeType: "N"
+        -
+          AttributeName: "personId"
+          AttributeType: "N"
+      KeySchema:
+        -
+          AttributeName: "id"
+          KeyType: "HASH"
+      GlobalSecondaryIndexes:
+        -
+          IndexName: "personIndex"
+          KeySchema:
+            -
+              AttributeName: "personId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
