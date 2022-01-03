@@ -1,0 +1,68 @@
+[
+  {
+    "Update": {
+      "TableName": "dynamo.example.people",
+      "Key": {
+        "id": {
+          "N": "21"
+        }
+      },
+      "UpdateExpression": "SET #name=:name, #version=:version, #yearOfBirth=:yearOfBirth, #yearOfDeath=:yearOfDeath",
+      "ExpressionAttributeValues": {
+        ":name": {
+          "S": "Mr Test25"
+        },
+        ":version": {
+          "N": "1"
+        },
+        ":yearOfBirth": {
+          "N": "1799"
+        },
+        ":yearOfDeath": {
+          "N": "1888"
+        }
+      },
+      "ExpressionAttributeNames": {
+        "#name": "name",
+        "#version": "version",
+        "#yearOfBirth": "yearOfBirth",
+        "#yearOfDeath": "yearOfDeath"
+      }
+    }
+  },
+  {
+    "Update": {
+      "TableName": "dynamo.example.facts",
+      "Key": {
+        "id": {
+          "N": "12"
+        }
+      },
+      "UpdateExpression": "SET #image=:image, #description=:description, #personId=:personId, #year=:year, #version=:version",
+      "ExpressionAttributeValues": {
+        ":image": {
+          "S": "Updated"
+        },
+        ":description": {
+          "S": "A changed description"
+        },
+        ":personId": {
+          "N": "21"
+        },
+        ":year": {
+          "N": "1872"
+        },
+        ":version": {
+          "N": "1"
+        }
+      },
+      "ExpressionAttributeNames": {
+        "#image": "image",
+        "#description": "description",
+        "#personId": "personId",
+        "#year": "year",
+        "#version": "version"
+      }
+    }
+  }
+]

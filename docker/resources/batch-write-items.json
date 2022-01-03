@@ -1,0 +1,148 @@
+{
+  "dynamo.example.facts": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "N": "7"
+          },
+          "personId": {
+            "N": "1"
+          },
+          "year": {
+            "N": "1901"
+          },
+          "image": {
+            "S": "resource2"
+          },
+          "description": {
+            "S": "fact1"
+          },
+          "version": {
+            "N": "1"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "N": "8"
+          },
+          "personId": {
+            "N": "1"
+          },
+          "year": {
+            "N": "1902"
+          },
+          "image": {
+            "S": "resource1"
+          },
+          "description": {
+            "S": "fact2"
+          },
+          "version": {
+            "N": "1"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "N": "9"
+          },
+          "personId": {
+            "N": "1"
+          },
+          "year": {
+            "N": "1892"
+          },
+          "source": {
+            "S": "source1"
+          },
+          "description": {
+            "S": "fact3"
+          },
+          "version": {
+            "N": "1"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "N": "10"
+          },
+          "personId": {
+            "N": "2"
+          },
+          "year": {
+            "N": "1852"
+          },
+          "image": {
+            "S": "resource3"
+          },
+          "description": {
+            "S": "fact4"
+          },
+          "version": {
+            "N": "1"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "N": "11"
+          },
+          "personId": {
+            "N": "3"
+          },
+          "year": {
+            "N": "1872"
+          },
+          "image": {
+            "S": "resource4"
+          },
+          "description": {
+            "S": "fact5"
+          },
+          "version": {
+            "N": "1"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "N": "12"
+          },
+          "personId": {
+            "N": "21"
+          },
+          "year": {
+            "N": "1872"
+          },
+          "image": {
+            "S": "Original"
+          },
+          "description": {
+            "S": "some facts"
+          },
+          "version": {
+            "N": "1"
+          }
+        }
+      }
+    }
+  ]
+}

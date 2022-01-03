@@ -26,7 +26,7 @@ Additional `npm` services are available:
 
 # Services
 ## DynamoDB
-The dynamoDB example demonstrates how to create dynamo tables using Cloudformation and read and write to those tables using the DynamoDB mapper feature.
+The dynamoDB example demonstrates how to create dynamo tables using Cloudformation and read and write to those tables.
 
 Features:
 * Cloudformation definition of tables
@@ -104,3 +104,4 @@ Features:
 * Nested template structure
 * Queue template
 * Lambda template 
+* DynamoDB template

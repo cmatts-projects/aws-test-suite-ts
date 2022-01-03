@@ -34,7 +34,7 @@ function expectJsonAttr {
   local actual=$2
   local expected=$3
   if [ ! -z "$4" ]; then
-    actual=$(jq -r $4 <<< $2 2>/dev/null)
+    actual=$(jq -r "$4" <<< $2 2>/dev/null)
   fi
 
   expectEquals "${desc}" "${actual}" "${expected}"

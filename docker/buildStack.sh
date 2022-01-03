@@ -11,7 +11,7 @@ function waitForContainerToStart() {
   echo
 }
 
-cp -r ../cloudformation/* ../dist
+cp -r resources ../dist/.
 
 docker-compose up -d
 
@@ -20,6 +20,7 @@ waitForContainerToStart
 . ./testDeployment.sh
 . ./testSqs.sh
 . ./testLambda.sh
+. ./testDynamoDb.sh
 
 reportAssertions
 
