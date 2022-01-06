@@ -40,7 +40,7 @@ describe('s3 client test', () => {
 
     it('should write file to bucket', async () => {
         const s3Url = 's3://mybucket/test/resources/MyFile.txt';
-        await S3Client.writeFileToBucket(s3Url, '.gitignore');
+        await S3Client.writeFileToBucket(s3Url, './test/s3/MyTestFile.txt');
 
         const fileExists: boolean = await S3Client.fileExists(s3Url);
         expect(fileExists).toBeTruthy();
