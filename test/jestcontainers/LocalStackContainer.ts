@@ -87,9 +87,9 @@ export default class LocalStackContainer {
 
     public setLocalstackProperties(): void {
         process.env.AWS_REGION = 'us-east-1';
-        process.env.AWS_ACCESS_KEY = 'access-key';
+        process.env.AWS_ACCESS_KEY_ID = 'access-key';
         process.env.AWS_SECRET_ACCESS_KEY = 'secret-key';
-        process.env.LOCALSTACK_HOSTNAME = this.getHost();
+        process.env.LOCALSTACK_HOSTNAME = `http://${this.getHost()}`;
         process.env.EDGE_PORT = this.getPort();
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     }

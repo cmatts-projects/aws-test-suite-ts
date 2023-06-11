@@ -1,12 +1,12 @@
 # AWS Test Suite for Typescript
 
-The AWS Test Suite is a testing repository for AWS services using Typescript.
-This repo contains example implementations of AWS features and services along with a Localstack test implementation of those services.
+The AWS Test Suite is a testing repository for AWS services using AWS SDK V3 for Typescript.
+This repo contains sample implementations of AWS features and services along with a Localstack test implementation of those services.
 
 # Pre-requisites
 
 Docker must be installed and configured so that the current user can invoke containers. On Linux, this means adding docker and the user to a docker group.
-Node 17+ must be installed.
+Node 18+ must be installed.
 Npm 8+ must be installed.
 Jq is required for Docker compose testing.
 
@@ -26,7 +26,7 @@ Additional `npm` services are available:
 
 # Services
 ## DynamoDB
-The dynamoDB example demonstrates how to create dynamo tables using Cloudformation and read and write to those tables.
+The dynamoDB sample demonstrates how to create dynamo tables using Cloudformation and read and write to those tables.
 
 Features:
 * Cloudformation definition of tables
@@ -37,14 +37,14 @@ Features:
 * Localstack test container creation for DynamoDB and Cloudformation
 
 ## Cloudwatch
-The cloudwatch example demonstrates some basic logging of cloudwatch metrics and extracting statistics.
+The cloudwatch sample demonstrates some basic logging of cloudwatch metrics and extracting statistics.
 
 Features:
 * Bulk logging of metrics
 * Getting average statistics from metrics
 
 ## S3
-The S3 example demonstrates how to store and retrieve content in an S3 bucket.
+The S3 sample demonstrates how to store and retrieve content in an S3 bucket.
 
 Features:
 * Creation of an S3 bucket
@@ -54,7 +54,7 @@ Features:
 * Verifying that an S3 object exists
 
 ## Secrets Manager
-The secrets manager examples demonstrate how to create, read and update secrets.
+The secrets manager samples demonstrate how to create, read and update secrets.
 
 Features:
 * Creation of a secret
@@ -62,14 +62,14 @@ Features:
 * Reading a secret
 
 ## Parameter Store
-The parameter store examples demonstrate how to create and read parameters.
+The parameter store samples demonstrate how to create and read parameters.
 
 Features:
 * Creation of a parameter
 * Reading a parameter
 
 ## SQS
-The Sqs examples demonstrate how to create queues and send and receive messages.
+The Sqs samples demonstrate how to create queues and send and receive messages.
 
 Features:
 * Creation of a queue
@@ -79,7 +79,7 @@ Features:
 * Queue purging
 
 ## Lambda
-The Lambda examples demonstrate how to handle events from a variety of sources.
+The Lambda samples demonstrate how to handle events from a variety of sources.
 
 Features:
 * Simple object event handling

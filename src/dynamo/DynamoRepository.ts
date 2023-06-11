@@ -1,22 +1,25 @@
 import type Person from './model/Person';
 import type Fact from './model/Fact';
 import type Siblings from './model/Siblings';
-import { DynamoDB } from 'aws-sdk';
-import {
-    BatchWriteItemInput,
-    ClientConfiguration,
-    Converter,
-    ExpressionAttributeNameMap,
-    ExpressionAttributeValueMap,
-    QueryInput,
-    QueryOutput,
-    ScanInput,
-    ScanOutput,
+import type {
+    AttributeValue,
+    BatchWriteItemCommandInput,
+    DynamoDBClientConfig,
+    QueryCommandOutput,
+    ScanCommandOutput,
     TransactWriteItem,
-    TransactWriteItemsInput,
+    TransactWriteItemsCommandInput,
     WriteRequest,
-    WriteRequests,
-} from 'aws-sdk/clients/dynamodb';
+} from '@aws-sdk/client-dynamodb';
+
+import {
+    DynamoDB,
+    BatchWriteItemCommand,
+    QueryCommand,
+    ScanCommand,
+    TransactWriteItemsCommand,
+} from '@aws-sdk/client-dynamodb';
+import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 
 export default class DynamoRepository {
     private static readonly BATCH_SIZE: number = 25;
@@ -31,7 +34,7 @@ export default class DynamoRepository {
         return DynamoRepository.client;
     }
 
-    private static getOptions(): ClientConfiguration {
+    private static getOptions(): DynamoDBClientConfig {
         if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
             const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
             return {
@@ -44,15 +47,18 @@ export default class DynamoRepository {
 
     public static async load(dataList: Person[] | Fact[]): Promise<void> {
         for (let i = 0; i < dataList.length; i += DynamoRepository.BATCH_SIZE) {
-            const batch: WriteRequests = await Promise.all(
+            const batch: Array<WriteRequest> = await Promise.all(
                 dataList.slice(i, i + DynamoRepository.BATCH_SIZE).map((data) => DynamoRepository.putRequest(data)),
             );
-
-            const params: BatchWriteItemInput = {
-                RequestItems: {},
+            const records: Record<string, WriteRequest[]> = {
+                [`${DynamoRepository.tableName(dataList[0])}`]: batch,
             };
-            params.RequestItems[DynamoRepository.tableName(dataList[0])] = batch;
-            await DynamoRepository.getClient().batchWriteItem(params).promise();
+            const writeRequest: BatchWriteItemCommandInput = {
+                RequestItems: records,
+            };
+
+            const command: BatchWriteItemCommand = new BatchWriteItemCommand(writeRequest);
+            await DynamoRepository.getClient().send(command);
         }
     }
 
@@ -61,7 +67,7 @@ export default class DynamoRepository {
             return undefined;
         }
 
-        const params: QueryInput = {
+        const command: QueryCommand = new QueryCommand({
             TableName: 'dynamo.example.people',
             ConsistentRead: true,
             KeyConditionExpression: 'id = :id',
@@ -70,18 +76,18 @@ export default class DynamoRepository {
                     N: `${id}`,
                 },
             },
-        };
-        const result: QueryOutput = await DynamoRepository.getClient().query(params).promise();
-        const people: Person[] | undefined = result.Items?.map((item) => Converter.unmarshall(item) as Person);
+        });
+        const result: QueryCommandOutput = await DynamoRepository.getClient().send(command);
+        const people: Person[] | undefined = result.Items?.map((item) => unmarshall(item) as Person);
         return !people || people.length == 0 ? undefined : people[0];
     }
 
     public static async findPeople(): Promise<Person[]> {
-        const params: ScanInput = {
+        const command: ScanCommand = new ScanCommand({
             TableName: 'dynamo.example.people',
-        };
-        const result: ScanOutput = await DynamoRepository.getClient().scan(params).promise();
-        const people: Person[] | undefined = result.Items?.map((item) => Converter.unmarshall(item) as Person);
+        });
+        const result: ScanCommandOutput = await DynamoRepository.getClient().send(command);
+        const people: Person[] | undefined = result.Items?.map((item) => unmarshall(item) as Person);
         return !people ? [] : people.sort(DynamoRepository.nameComparator);
     }
 
@@ -90,7 +96,7 @@ export default class DynamoRepository {
             return [];
         }
 
-        const params: QueryInput = {
+        const command: QueryCommand = new QueryCommand({
             TableName: 'dynamo.example.facts',
             ConsistentRead: false,
             IndexName: 'personIndex',
@@ -100,9 +106,9 @@ export default class DynamoRepository {
                     N: `${personId}`,
                 },
             },
-        };
-        const result: QueryOutput = await DynamoRepository.getClient().query(params).promise();
-        const facts: Fact[] | undefined = result.Items?.map((item) => Converter.unmarshall(item) as Fact);
+        });
+        const result: QueryCommandOutput = await DynamoRepository.getClient().send(command);
+        const facts: Fact[] | undefined = result.Items?.map((item) => unmarshall(item) as Fact);
         return !facts ? [] : facts;
     }
 
@@ -134,7 +140,7 @@ export default class DynamoRepository {
             return [];
         }
 
-        const params: QueryInput = {
+        const command: QueryCommand = new QueryCommand({
             TableName: 'dynamo.example.people',
             IndexName: 'fatherIndex',
             ConsistentRead: false,
@@ -144,10 +150,10 @@ export default class DynamoRepository {
                     N: `${id}`,
                 },
             },
-        };
+        });
 
-        const result: QueryOutput = await DynamoRepository.getClient().query(params).promise();
-        const people: Person[] | undefined = result.Items?.map((item) => Converter.unmarshall(item) as Person);
+        const result: QueryCommandOutput = await DynamoRepository.getClient().send(command);
+        const people: Person[] | undefined = result.Items?.map((item) => unmarshall(item) as Person);
         return !people || people.length == 0 ? [] : people;
     }
 
@@ -155,7 +161,7 @@ export default class DynamoRepository {
         if (!id) {
             return [];
         }
-        const params: QueryInput = {
+        const command: QueryCommand = new QueryCommand({
             TableName: 'dynamo.example.people',
             IndexName: 'motherIndex',
             ConsistentRead: false,
@@ -165,22 +171,19 @@ export default class DynamoRepository {
                     N: `${id}`,
                 },
             },
-        };
+        });
 
-        const result: QueryOutput = await DynamoRepository.getClient().query(params).promise();
-        const people: Person[] | undefined = result.Items?.map((item) => Converter.unmarshall(item) as Person);
+        const result: QueryCommandOutput = await DynamoRepository.getClient().send(command);
+        const people: Person[] | undefined = result.Items?.map((item) => unmarshall(item) as Person);
         return !people || people.length == 0 ? [] : people;
     }
 
     public static async updateEntities(entities: (Person | Fact)[]): Promise<void> {
-        const params: TransactWriteItemsInput = {
-            TransactItems: [],
+        const transactionWriteItems: TransactWriteItemsCommandInput = {
+            TransactItems: entities.map((e) => DynamoRepository.updateStatement(e)),
         };
-        for (let i = 0; i < entities.length; i++) {
-            const item: TransactWriteItem = DynamoRepository.updateStatement(entities[i]);
-            params.TransactItems.push(item);
-        }
-        await DynamoRepository.getClient().transactWriteItems(params).promise();
+        const command: TransactWriteItemsCommand = new TransactWriteItemsCommand(transactionWriteItems);
+        await DynamoRepository.getClient().send(command);
     }
 
     private static async findAllSiblings(person: Person): Promise<Person[]> {
@@ -222,32 +225,33 @@ export default class DynamoRepository {
     private static putRequest(e: Person | Fact): WriteRequest {
         return {
             PutRequest: {
-                Item: Converter.marshall(e),
+                Item: marshall(e),
             },
         };
     }
 
     private static updateStatement(e: Person | Fact): TransactWriteItem {
         let updateAttrs = '';
-        const expressionAttrs: ExpressionAttributeValueMap = {};
-        const expressionNames: ExpressionAttributeNameMap = {};
+        const expressionAttrs: Record<string, AttributeValue> = {};
+        const expressionNames: Record<string, string> = {};
         Object.keys(e).forEach((key) => {
             if (key != 'id') {
                 updateAttrs += updateAttrs.length == 0 ? 'SET ' : ', ';
 
+                const attr = `:${key}`;
+                const attrName = `#${key}`;
+                updateAttrs += `${attrName}=${attr}`;
+                expressionNames[attrName] = key;
+
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 const val = e[key];
-                const attr = `:${key}`;
-                const attrName = `#${key}`;
                 const attrType: string = !val ? 'NULL' : typeof val === 'string' ? 'S' : 'N';
-
-                expressionAttrs[attr] = {};
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                expressionAttrs[attr][`${attrType}`] = `${val}`;
-                updateAttrs += `${attrName}=${attr}`;
-                expressionNames[attrName] = key;
+                expressionAttrs[attr] = {
+                    [`${attrType}`]: `${val}`,
+                };
             }
         });
 

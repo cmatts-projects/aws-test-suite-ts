@@ -1,17 +1,19 @@
-import { SQS } from 'aws-sdk';
-import {
-    ClientConfiguration,
-    CreateQueueRequest,
-    GetQueueUrlRequest,
+import type {
     GetQueueUrlResult,
     Message,
-    PurgeQueueRequest,
-    ReceiveMessageRequest,
     ReceiveMessageResult,
-    SendMessageBatchRequest,
     SendMessageBatchRequestEntry,
-    SendMessageRequest,
-} from 'aws-sdk/clients/sqs';
+    SQSClientConfig,
+} from '@aws-sdk/client-sqs';
+import {
+    CreateQueueCommand,
+    GetQueueUrlCommand,
+    PurgeQueueCommand,
+    ReceiveMessageCommand,
+    SendMessageBatchCommand,
+    SendMessageCommand,
+    SQS,
+} from '@aws-sdk/client-sqs';
 import { v4 as getUuid } from 'uuid';
 import S3Client from '@/s3/S3Client';
 
@@ -37,7 +39,7 @@ export default class SqsClient {
         return this.client;
     }
 
-    private static getOptions(): ClientConfiguration {
+    private static getOptions(): SQSClientConfig {
         if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
             const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
 
@@ -50,32 +52,32 @@ export default class SqsClient {
     }
 
     public async createQueue(queueName: string): Promise<void> {
-        const params: CreateQueueRequest = {
+        const command: CreateQueueCommand = new CreateQueueCommand({
             QueueName: queueName,
-        };
-        await this.getSqsClient().createQueue(params).promise();
+        });
+        await this.getSqsClient().send(command);
     }
 
     public async purgeQueue(queueName: string): Promise<void> {
-        const params: PurgeQueueRequest = {
+        const command: PurgeQueueCommand = new PurgeQueueCommand({
             QueueUrl: await this.getQueueUrl(queueName),
-        };
-        await this.getSqsClient().purgeQueue(params).promise();
+        });
+        await this.getSqsClient().send(command);
     }
 
     public async sendToQueue(queueName: string, message: string): Promise<void> {
-        const params: SendMessageRequest = {
+        const command: SendMessageCommand = new SendMessageCommand({
             QueueUrl: await this.getQueueUrl(queueName),
             MessageBody: message,
-        };
-        await this.getSqsClient().sendMessage(params).promise();
+        });
+        await this.getSqsClient().send(command);
     }
 
     public async readFromQueue(queueName: string): Promise<string[]> {
-        const params: ReceiveMessageRequest = {
+        const command: ReceiveMessageCommand = new ReceiveMessageCommand({
             QueueUrl: await this.getQueueUrl(queueName),
-        };
-        const response: ReceiveMessageResult = await this.getSqsClient().receiveMessage(params).promise();
+        });
+        const response: ReceiveMessageResult = await this.getSqsClient().send(command);
 
         return !response.Messages ? [] : response.Messages.map((m: Message) => <string>m.Body);
     }
@@ -88,11 +90,11 @@ export default class SqsClient {
                     .map(async (message: string) => await this.messagePayload(message)),
             );
 
-            const params: SendMessageBatchRequest = {
+            const command: SendMessageBatchCommand = new SendMessageBatchCommand({
                 QueueUrl: await this.getQueueUrl(queueName),
                 Entries: batch,
-            };
-            await this.getSqsClient().sendMessageBatch(params).promise();
+            });
+            await this.getSqsClient().send(command);
         }
     }
 
@@ -146,11 +148,11 @@ export default class SqsClient {
     }
 
     private async getQueueUrl(queueName: string): Promise<string> {
-        const params: GetQueueUrlRequest = {
+        const command: GetQueueUrlCommand = new GetQueueUrlCommand({
             QueueName: queueName,
-        };
+        });
 
-        const response: GetQueueUrlResult = await this.getSqsClient().getQueueUrl(params).promise();
+        const response: GetQueueUrlResult = await this.getSqsClient().send(command);
         if (!response.QueueUrl) {
             throw new Error('Can not get queue url');
         }

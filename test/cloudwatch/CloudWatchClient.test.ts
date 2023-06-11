@@ -1,7 +1,7 @@
 import LocalStackContainer from '../jestcontainers/LocalStackContainer';
 import LocalStackService from '../jestcontainers/LocalStackService';
 import CloudWatchClient from '@/cloudwatch/CloudWatchClient';
-import { MetricDatum } from 'aws-sdk/clients/cloudwatch';
+import type { MetricDatum } from '@aws-sdk/client-cloudwatch';
 
 describe('secrets manager client test', () => {
     const NUMBER_METRICS = 100;

@@ -1,12 +1,10 @@
-import { CloudWatch } from 'aws-sdk';
-import {
-    ClientConfiguration,
-    Dimension,
+import type {
+    CloudWatchClientConfig,
     MetricDatum,
-    PutMetricDataInput,
-    GetMetricStatisticsInput,
-    GetMetricStatisticsOutput,
-} from 'aws-sdk/clients/cloudwatch';
+    Dimension,
+    GetMetricStatisticsCommandOutput,
+} from '@aws-sdk/client-cloudwatch';
+import { CloudWatch, GetMetricStatisticsCommand, PutMetricDataCommand } from '@aws-sdk/client-cloudwatch';
 
 export default class CloudWatchClient {
     private static readonly BATCH_SIZE: number = 25;
@@ -22,7 +20,7 @@ export default class CloudWatchClient {
         return CloudWatchClient.client;
     }
 
-    private static getOptions(): ClientConfiguration {
+    private static getOptions(): CloudWatchClientConfig {
         if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
             const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
             return {
@@ -55,11 +53,11 @@ export default class CloudWatchClient {
         for (let i = 0; i < metrics.length; i += CloudWatchClient.BATCH_SIZE) {
             const batch = metrics.slice(i, i + CloudWatchClient.BATCH_SIZE);
 
-            const params: PutMetricDataInput = {
-                MetricData: batch,
+            const command: PutMetricDataCommand = new PutMetricDataCommand({
                 Namespace: namespace,
-            };
-            await CloudWatchClient.getClient().putMetricData(params).promise();
+                MetricData: batch,
+            });
+            await CloudWatchClient.getClient().send(command);
         }
     }
 
@@ -78,7 +76,7 @@ export default class CloudWatchClient {
             Name: dimensionName,
             Value: dimensionValue,
         };
-        const request: GetMetricStatisticsInput = {
+        const command: GetMetricStatisticsCommand = new GetMetricStatisticsCommand({
             StartTime: startTime,
             EndTime: endTime,
             Period: days * CloudWatchClient.DAY_SECONDS,
@@ -86,11 +84,9 @@ export default class CloudWatchClient {
             Namespace: namespace,
             MetricName: metricName,
             Dimensions: [dimension],
-        };
+        });
 
-        const response: GetMetricStatisticsOutput = await CloudWatchClient.getClient()
-            .getMetricStatistics(request)
-            .promise();
+        const response: GetMetricStatisticsCommandOutput = await CloudWatchClient.getClient().send(command);
 
         return !response.Datapoints || response.Datapoints.length == 0 || !response.Datapoints[0].Average
             ? 0

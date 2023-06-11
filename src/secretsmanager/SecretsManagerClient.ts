@@ -1,11 +1,10 @@
-import { SecretsManager } from 'aws-sdk';
+import type { GetSecretValueCommandOutput, SecretsManagerClientConfig } from '@aws-sdk/client-secrets-manager';
 import {
-    ClientConfiguration,
-    CreateSecretRequest,
-    GetSecretValueRequest,
-    GetSecretValueResponse,
-    PutSecretValueRequest,
-} from 'aws-sdk/clients/secretsmanager';
+    SecretsManager,
+    CreateSecretCommand,
+    GetSecretValueCommand,
+    PutSecretValueCommand,
+} from '@aws-sdk/client-secrets-manager';
 
 export default class SecretsManagerClient {
     private static client: SecretsManager | undefined;
@@ -19,7 +18,7 @@ export default class SecretsManagerClient {
         return SecretsManagerClient.client;
     }
 
-    private static getOptions(): ClientConfiguration {
+    private static getOptions(): SecretsManagerClientConfig {
         if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
             const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
             return {
@@ -31,32 +30,30 @@ export default class SecretsManagerClient {
     }
 
     public static async createSecret(secretName: string, secretValue: string): Promise<void> {
-        const params: CreateSecretRequest = {
+        const command: CreateSecretCommand = new CreateSecretCommand({
             Name: secretName,
             SecretString: secretValue,
-        };
+        });
 
-        await SecretsManagerClient.getClient().createSecret(params).promise();
+        await SecretsManagerClient.getClient().send(command);
     }
 
     public static async updateSecret(secretName: string, secretValue: string): Promise<void> {
-        const params: PutSecretValueRequest = {
+        const command: PutSecretValueCommand = new PutSecretValueCommand({
             SecretId: secretName,
             SecretString: secretValue,
-        };
+        });
 
-        await SecretsManagerClient.getClient().putSecretValue(params).promise();
+        await SecretsManagerClient.getClient().send(command);
     }
 
     public static async readSecret(secretName: string): Promise<string | undefined> {
         try {
-            const params: GetSecretValueRequest = {
+            const command: GetSecretValueCommand = new GetSecretValueCommand({
                 SecretId: secretName,
-            };
+            });
 
-            const response: GetSecretValueResponse = await SecretsManagerClient.getClient()
-                .getSecretValue(params)
-                .promise();
+            const response: GetSecretValueCommandOutput = await SecretsManagerClient.getClient().send(command);
             return response.SecretString;
         } catch (error) {
             return undefined;

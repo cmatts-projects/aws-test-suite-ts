@@ -1,5 +1,5 @@
-import { SSM } from 'aws-sdk';
-import { ClientConfiguration, GetParameterRequest, GetParameterResult, PutParameterRequest } from 'aws-sdk/clients/ssm';
+import type { GetParameterResult, SSMClientConfig } from '@aws-sdk/client-ssm';
+import { SSM, GetParameterCommand, PutParameterCommand } from '@aws-sdk/client-ssm';
 
 export default class ParameterStoreClient {
     private static client: SSM | undefined;
@@ -13,7 +13,7 @@ export default class ParameterStoreClient {
         return ParameterStoreClient.client;
     }
 
-    private static getOptions(): ClientConfiguration {
+    private static getOptions(): SSMClientConfig {
         if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
             const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
             return {
@@ -29,22 +29,22 @@ export default class ParameterStoreClient {
         parameterValue: string,
         parameterDescription: string,
     ): Promise<void> {
-        const params: PutParameterRequest = {
+        const command: PutParameterCommand = new PutParameterCommand({
             Name: parameterName,
             Value: parameterValue,
             Description: parameterDescription,
-        };
+        });
 
-        await ParameterStoreClient.getClient().putParameter(params).promise();
+        await ParameterStoreClient.getClient().send(command);
     }
 
     public static async readParameter(parameterName: string): Promise<string | undefined> {
         try {
-            const params: GetParameterRequest = {
+            const command: GetParameterCommand = new GetParameterCommand({
                 Name: parameterName,
-            };
+            });
 
-            const response: GetParameterResult = await ParameterStoreClient.getClient().getParameter(params).promise();
+            const response: GetParameterResult = await ParameterStoreClient.getClient().send(command);
             return !response.Parameter ? '' : response.Parameter.Value;
         } catch (error) {
             return undefined;

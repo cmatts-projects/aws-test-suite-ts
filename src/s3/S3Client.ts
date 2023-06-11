@@ -1,13 +1,12 @@
-import { S3 } from 'aws-sdk';
-import type {
-    ClientConfiguration,
-    CreateBucketRequest,
-    GetObjectOutput,
-    GetObjectRequest,
-    HeadBucketRequest,
-    HeadObjectRequest,
-    PutObjectRequest,
-} from 'aws-sdk/clients/s3';
+import type { GetObjectCommandOutput, S3ClientConfig } from '@aws-sdk/client-s3';
+import {
+    S3,
+    CreateBucketCommand,
+    GetObjectCommand,
+    HeadBucketCommand,
+    HeadObjectCommand,
+    PutObjectCommand,
+} from '@aws-sdk/client-s3';
 import assert from 'assert';
 import * as fs from 'fs';
 
@@ -23,12 +22,12 @@ export default class S3Client {
         return S3Client.client;
     }
 
-    private static getOptions(): ClientConfiguration {
+    private static getOptions(): S3ClientConfig {
         if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
             const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
             return {
                 endpoint,
-                s3ForcePathStyle: true,
+                forcePathStyle: true,
             };
         }
         return {};
@@ -36,10 +35,10 @@ export default class S3Client {
 
     public static async bucketExists(bucket: string): Promise<boolean> {
         try {
-            const params: HeadBucketRequest = {
+            const command: HeadBucketCommand = new HeadBucketCommand({
                 Bucket: bucket,
-            };
-            await S3Client.getClient().headBucket(params).promise();
+            });
+            await S3Client.getClient().send(command);
             return true;
         } catch (error) {
             return false;
@@ -47,10 +46,10 @@ export default class S3Client {
     }
 
     public static async createBucket(bucket: string): Promise<void> {
-        const params: CreateBucketRequest = {
+        const command: CreateBucketCommand = new CreateBucketCommand({
             Bucket: bucket,
-        };
-        await S3Client.getClient().createBucket(params).promise();
+        });
+        await S3Client.getClient().send(command);
     }
 
     public static async writeFileToBucket(s3Url: string, filePath: string): Promise<void> {
@@ -61,12 +60,12 @@ export default class S3Client {
     public static async writeToBucket(s3Url: string, content: string): Promise<void> {
         try {
             const url = this.toS3Url(s3Url);
-            const params: PutObjectRequest = {
+            const command: PutObjectCommand = new PutObjectCommand({
                 Bucket: url.hostname,
                 Key: url.pathname,
                 Body: content,
-            };
-            await S3Client.getClient().putObject(params).promise();
+            });
+            await S3Client.getClient().send(command);
         } catch (error) {
             throw new Error('Invalid s3 url');
         }
@@ -75,11 +74,11 @@ export default class S3Client {
     public static async fileExists(s3Url: string): Promise<boolean> {
         try {
             const url = this.toS3Url(s3Url);
-            const params: HeadObjectRequest = {
+            const command: HeadObjectCommand = new HeadObjectCommand({
                 Bucket: url.hostname,
                 Key: url.pathname,
-            };
-            await S3Client.getClient().headObject(params).promise();
+            });
+            await S3Client.getClient().send(command);
             return true;
         } catch (error) {
             return false;
@@ -89,13 +88,13 @@ export default class S3Client {
     public static async readFromBucket(s3Url: string): Promise<string> {
         try {
             const url = this.toS3Url(s3Url);
-            const params: GetObjectRequest = {
+            const command: GetObjectCommand = new GetObjectCommand({
                 Bucket: url.hostname,
                 Key: url.pathname,
-            };
-            const response: GetObjectOutput = await S3Client.getClient().getObject(params).promise();
+            });
+            const response: GetObjectCommandOutput = await S3Client.getClient().send(command);
 
-            return !response.Body ? '' : response.Body.toString('utf-8');
+            return !response.Body ? '' : response.Body.transformToString('utf-8');
         } catch (error) {
             throw new Error('Invalid s3 url');
         }
