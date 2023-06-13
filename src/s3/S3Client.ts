@@ -24,7 +24,7 @@ export default class S3Client {
 
     private static getOptions(): S3ClientConfig {
         if (process.env.LOCALSTACK_HOSTNAME && process.env.EDGE_PORT) {
-            const endpoint = `${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
+            const endpoint = `http://${process.env.LOCALSTACK_HOSTNAME}:${process.env.EDGE_PORT}`;
             return {
                 endpoint,
                 forcePathStyle: true,

@@ -19,9 +19,9 @@ function expectEquals {
   if [ ! -z "${expected}" ] && [ "${actual}" != "${expected}" ]; then
     echo -e "\t${RED}${desc} - FAIL${NC}"
     echo -e "\t\texpected:"
-    echo -e "\t\t\t${actual}"
-    echo -e "\t\tto equal:"
     echo -e "\t\t\t${expected}"
+    echo -e "\t\tto equal:"
+    echo -e "\t\t\t${actual}"
     ((assertions_fails++))
   else
     echo -e "\t${GREEN}${desc} - PASS${NC}"
