@@ -30,7 +30,7 @@ Resources:
         SQSEvent:
           Type: SQS
           Properties:
-            Queue: arn:aws:sqs:us-east-1:000000000000:myQueue
+            Queue: !Ref TestQueueArn
             BatchSize: 10
 
 Outputs:

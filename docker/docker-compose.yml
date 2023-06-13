@@ -2,21 +2,16 @@ version: '3.7'
 
 services:
   localstack:
-    image: localstack/localstack:0.12.17
+    image: localstack/localstack:2.1.0
     container_name: localstack
     ports:
       - 4566:4566
     network_mode: bridge
     volumes:
       - ../dist/:/opt/dist
-      - /tmp/localstack:/tmp/localstack
+      - ./volume:/var/lib/localstack
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       SERVICE: cloudformation,s3,sqs,lambda,dynamodb
       DEBUG: 1
-      DEFAULT_REGION: us-east-1
-      HOSTNAME_EXTERNAL: 172.17.0.2
-      LAMBDA_EXECUTOR: docker
-      LAMBDA_REMOTE_DOCKER: 'false'
-      DATA_DIR: /tmp/localstack/data
       DOCKER_HOST: unix:///var/run/docker.sock

@@ -26,13 +26,45 @@ Resources:
       Parameters:
         RuntimeQueue: !Ref RuntimeForwardQueue
 
-  Lambdas:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: lambda.yml
-      TestQueueArn: !GetAtt TestQueue.Outputs.QueueArn
+# Nestesd template for Lambdas doesn't work with localstack 2.0.0+
+# It fails with a CAPABILITY_AUTO_EXPAND error
+# Including lambdas directly instead
+#
+#  Lambdas:
+#    Type: AWS::CloudFormation::Stack
+#    Properties:
+#      TemplateURL: lambda.yml
+#      Parameters:
+#        TestQueueArn: !GetAtt TestQueue.Outputs.QueueArn
 
-  Dyname:
+  SimpleEventLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: SimpleEventLambda
+      CodeUri: lambda.js.zip
+      Handler: lambda.simpleEventHandler
+      Runtime: nodejs18.x
+
+  SqsEventLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: SqsEventLambda
+      CodeUri: lambda.js.zip
+      Handler: lambda.sqsEventHandler
+      Runtime: nodejs18.x
+      ReservedConcurrentExecutions: 1
+      Environment:
+        Variables:
+          FORWARD_QUEUE: myForwardQueue
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt TestQueue.Outputs.QueueArn
+            BatchSize: 10
+
+
+  Dynamo:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: dynamo-tables.yml
