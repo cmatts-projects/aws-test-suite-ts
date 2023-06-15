@@ -33,6 +33,7 @@ export default class ParameterStoreClient {
             Name: parameterName,
             Value: parameterValue,
             Description: parameterDescription,
+            Type: 'String',
         });
 
         await ParameterStoreClient.getClient().send(command);

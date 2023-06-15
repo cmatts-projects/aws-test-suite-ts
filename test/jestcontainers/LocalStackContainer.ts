@@ -16,7 +16,7 @@ export default class LocalStackContainer {
     public static async create(services: LocalStackService[]): Promise<LocalStackContainer> {
         const externalPort = await getPort();
         const container = await new Docker().createContainer({
-            Image: 'localstack/localstack:0.12.15',
+            Image: 'localstack/localstack:2.1.0',
             AttachStdin: false,
             AttachStdout: true,
             AttachStderr: true,

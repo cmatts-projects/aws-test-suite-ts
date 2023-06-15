@@ -18,7 +18,7 @@ import { v4 as getUuid } from 'uuid';
 import S3Client from '@/s3/S3Client';
 
 export default class SqsClient {
-    private static readonly BATCH_SIZE: number = 25;
+    private static readonly BATCH_SIZE: number = 10;
     private static readonly MAX_MESSAGE_SIZE: number = 256000;
     private static readonly LARGE_PAYLOAD_ID: string = 'software.amazon.payloadoffloading.PayloadS3Pointer';
     private static readonly LARGE_MESSAGE_EXP: RegExp = new RegExp(`^\\["${SqsClient.LARGE_PAYLOAD_ID}",(.*)\\]$`);
@@ -83,19 +83,39 @@ export default class SqsClient {
     }
 
     public async sendToExtendedQueue(queueName: string, messages: string[]): Promise<void> {
-        for (let i = 0; i < messages.length; i += SqsClient.BATCH_SIZE) {
-            const batch: SendMessageBatchRequestEntry[] = await Promise.all(
-                messages
-                    .slice(i, i + SqsClient.BATCH_SIZE)
-                    .map(async (message: string) => await this.messagePayload(message)),
-            );
-
+        const payloads: SendMessageBatchRequestEntry[][] = await this.splitBatch(messages);
+        for (const batch of payloads) {
             const command: SendMessageBatchCommand = new SendMessageBatchCommand({
                 QueueUrl: await this.getQueueUrl(queueName),
                 Entries: batch,
             });
             await this.getSqsClient().send(command);
         }
+    }
+
+    private async splitBatch(messages: string[]): Promise<SendMessageBatchRequestEntry[][]> {
+        const payloads: SendMessageBatchRequestEntry[][] = [];
+        let currentBatchSize = 0;
+        let currentBatchBytes = 0;
+        let payloadBatch: SendMessageBatchRequestEntry[] = [];
+        for (const message of messages) {
+            const payload = await this.messagePayload(message);
+            const payloadBytes = Buffer.byteLength(JSON.stringify(payload), 'utf8');
+            if (
+                SqsClient.BATCH_SIZE <= currentBatchSize ||
+                SqsClient.MAX_MESSAGE_SIZE < currentBatchBytes + payloadBytes
+            ) {
+                payloads.push(payloadBatch);
+                currentBatchSize = 0;
+                currentBatchBytes = 0;
+                payloadBatch = [];
+            }
+            payloadBatch.push(payload);
+            currentBatchSize++;
+            currentBatchBytes += payloadBytes;
+        }
+        payloads.push(payloadBatch);
+        return payloads;
     }
 
     private async messagePayload(message: string): Promise<SendMessageBatchRequestEntry> {

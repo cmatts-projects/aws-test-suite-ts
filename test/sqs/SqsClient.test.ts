@@ -76,13 +76,22 @@ describe('sqs client test', () => {
         expect(receivedMessages[0]).toEqual(largeMessage);
     });
 
-    it('should Send Big Message Batch To Extended Queue', async () => {
-        const largeMessage: string = 'X'.repeat(250 * 1024);
+    it('should send split batch when combined messages exceed max message size', async () => {
+        const largeMessage: string = 'X'.repeat(127 * 1024);
         const messageBatch: string[] = [largeMessage, largeMessage, largeMessage];
         await getSqsClient().sendToExtendedQueue(TEST_QUEUE, messageBatch);
 
         const receivedMessages: string[] = await retrieveMessagesFromSqs(3);
-        expect(receivedMessages[0]).toEqual(largeMessage);
+        receivedMessages.forEach((m) => expect(m).toEqual(largeMessage));
+    });
+
+    it('should send split batch when combined total messages exceed message limit', async () => {
+        const message: string = 'X'.repeat(127);
+        const messageBatch: string[] = Array(22).fill(message);
+        await getSqsClient().sendToExtendedQueue(TEST_QUEUE, messageBatch);
+
+        const receivedMessages: string[] = await retrieveMessagesFromSqs(22);
+        receivedMessages.forEach((m) => expect(m).toEqual(message));
     });
 
     const retrieveMessagesFromSqs = async (numberOfRecords: number): Promise<string[]> => {
