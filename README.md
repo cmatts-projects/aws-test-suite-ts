@@ -9,6 +9,8 @@ Docker must be installed and configured so that the current user can invoke cont
 Node 18+ must be installed.
 Npm 8+ must be installed.
 Jq is required for Docker compose testing.
+Terraform is required for Terraform deployment testing.
+terraform-local is required for Terraform deployment testing.
 
 # Build
 To build and test:
@@ -22,7 +24,8 @@ Additional `npm` services are available:
 * `test` - to run the tests
 * `coverage` - to generate a coverage report
 * `dist` - to generate the distribution zip
-* `testDeploy` - to test deployment to localstack
+* `testDeployCF` - to test deployment to localstack using Cloudformation
+* `testDeployTF` - to test deployment to localstack using Terraform
 
 # Services
 ## DynamoDB
@@ -92,10 +95,12 @@ The `docker` folder contains a sample `docker-compose` definition to deploy and 
 Features:
 * Configuration of lambda deployment to a child container
 * Aws cloudformation package and deployment
+* Terraform package and deployment
 * BDD style bash testing
 * Test stack creation
 * Test lambdas
 * Test SQS Service
+* Test DynamoDB Service
 
 # Cloudformation
 The `cloudformation` folder contains sample component templates.
@@ -105,3 +110,11 @@ Features:
 * Queue template
 * Lambda template 
 * DynamoDB template
+
+# Terraform
+The `terraform` folder contains a sample resource template.
+
+Features:
+* Queue resources
+* Lambda resources
+* DynamoDB resources

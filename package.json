@@ -9,7 +9,8 @@
     "build": "npm install && npm run lint && npm run test && npm run dist",
     "test": "jest --reporters='default' --runInBand",
     "dist": "webpack",
-    "testDeploy": "npm install && npm run dist && cd docker && ./buildStack.sh",
+    "testDeployCF": "rm -r ./dist && npm install && npm run dist && cd docker && ./buildStack.sh CF",
+    "testDeployTF": "rm -r ./dist && npm install && npm run dist && cd docker && ./buildStack.sh TF",
     "coverage": "jest --coverage"
   },
   "author": "Calvin Matthews",
